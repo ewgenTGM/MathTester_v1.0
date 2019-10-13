@@ -1,43 +1,25 @@
-﻿using ExampleClasses.Controllers;
-using ExampleClasses.Models;
-using ExampleClasses.View;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ExampleClasses.Models;
 
 namespace Tester
 {
-    class Viewer : IView
+    class Program
     {
-        public event EventHandler TakeAnswer;
-        public event EventHandler StartTesting;
-        
-        public void SetExample(int arg1, int arg2, char operation)
+        static void Main(string[] args)
         {
-            Console.WriteLine($"{arg1} {operation} {arg2} = ?");
-        }
-
-        public void StopTesting(string reason)
-        {
-            throw new NotImplementedException();
-        }
-    }
-    internal class Program
-    {
-        static Viewer viewer = new Viewer();
-        static ExampleSetBuilder exSet = new ExampleSetBuilder();
-        private static void Main(string[] args)
-        {
-            
-            
-            exSet.AddExampleToSet(10, ExampleSetBuilder.ExampleType.Random);
-            Training training = new Training(viewer, exSet, 600, 10);
-            viewer.StartTesting += Viewer_StartTesting;
-            Console.ReadLine();
-        }
-
-        private static void Viewer_StartTesting(object sender, EventArgs e)
-        {
-            ;
+            ExampleSetBuilder exampleSetBuilder = new ExampleSetBuilder();
+            exampleSetBuilder.AddExampleToSet(5, ExampleSetBuilder.ExampleType.Random);
+            Training training = new Training(exampleSetBuilder, 3);
+            training.TrainingStarted += (sender, dateTime) => Console.WriteLine($"Тренировка начата {dateTime.ToShortTimeString()}");
+            training.TrainingEnded += (sender, dateTime) => Console.WriteLine($"Тренировка окончена {dateTime.ToShortTimeString()}");
+            training.Tick += (sender, time) => Console.WriteLine($"Осталось: {time} секунд!");
+            training.TakeNextExample += (sender, ex) => Console.WriteLine($"Выдан новый пример! {ex.ToString()}");
+            training.StartTraining();
+            Console.ReadKey();
         }
     }
 }

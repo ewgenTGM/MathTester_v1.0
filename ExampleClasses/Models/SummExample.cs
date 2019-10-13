@@ -1,6 +1,6 @@
 ﻿namespace ExampleClasses.Models
 {
-    internal class SummExample : ExampleBase
+    internal sealed class SummExample : ExampleBase
     {
         public SummExample()
         {

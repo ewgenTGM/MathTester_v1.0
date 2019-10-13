@@ -10,14 +10,14 @@ namespace ExampleClasses.Models
         Undefined = 4        // не определено (ещё не задействован)
     }
 
-    public class ExampleBase : IExample
+    public abstract class ExampleBase : IExample
     {
         public int OperandOne { get; set; }
         public int OperandTwo { get; set; }
         public int Result { get; set; }
         public char Opr { get; set; }
         public ExampleState State { get; private set; } = ExampleState.Undefined;
-        public int UserAnswer { get => UserAnswer; set => UserAnswer = value; }
+        public int UserAnswer { get ; set ; }
 
         public static Random r = new Random();
 
